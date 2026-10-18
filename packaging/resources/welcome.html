@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+  body { font: 13px/1.6 -apple-system, sans-serif; color: #171717; margin: 0 4px; }
+  h1 { font-size: 20px; font-weight: 600; margin: 4px 0 2px; }
+  .lead { color: #737373; margin: 0 0 16px; }
+  .card { border: 1px solid #e5e5e5; border-radius: 12px; padding: 10px 14px; margin: 10px 0; }
+  .card b { display: block; font-weight: 600; }
+  .muted { color: #737373; }
+  code { font: 12px ui-monospace, Menlo, monospace; background: rgba(127, 127, 127, 0.14); padding: 1px 5px; border-radius: 5px; }
+  @media (prefers-color-scheme: dark) {
+    body { color: #ededed; }
+    .card { border-color: rgba(255, 255, 255, 0.12); }
+    .lead, .muted { color: #8f8f8f; }
+  }
+</style>
+</head>
+<body>
+  <h1>FanCurve</h1>
+  <p class="lead">CPU·GPU 중 더 뜨거운 쪽 온도에 맞춰 Mac의 팬 속도를 조절합니다.</p>
+
+  <div class="card">
+    <b>FanCurve 앱</b>
+    <span class="muted">응용 프로그램 폴더와 메뉴 막대에서 온도, 팬 속도, 팬 곡선을 보고 바꿉니다.</span>
+  </div>
+  <div class="card">
+    <b>팬 제어 서비스</b>
+    <span class="muted">부팅할 때 시작해 2초마다 온도를 읽고 팬 속도를 정합니다. 멈추면 팬을 Apple 자동 제어로 되돌립니다.</span>
+  </div>
+
+  <p class="muted">필요 조건: Apple Silicon Mac(M1 이후), macOS 14 이상.<br>
+  Macs Fan Control 같은 다른 팬 조절 앱을 쓰고 있다면 그 앱의 팬 설정을 '자동'으로 두세요.</p>
+</body>
+</html>

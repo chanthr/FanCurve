@@ -1,0 +1,26 @@
+#!/bin/bash
+# Starts FanCurve once its files are in place. Run as root by the .pkg
+# installer and by fan.sh install.
+LABEL=local.fancurve
+STATE_DIR="/Library/Application Support/fancurve"
+APP=/Applications/FanCurve.app
+
+# Settings live in a root-owned folder; every local user (group staff) may edit
+# them from the app. The service clamps whatever it reads.
+install -d -o root -g wheel -m 755 "$STATE_DIR"
+[ -f "$STATE_DIR/config" ] || printf 'mode=curve\nlow=50\nhigh=80\nhot=105\n' > "$STATE_DIR/config"
+chown root:staff "$STATE_DIR/config"
+chmod 664 "$STATE_DIR/config"
+
+launchctl bootstrap system "/Library/LaunchDaemons/$LABEL.plist"
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$APP" 2>/dev/null
+
+# Start the app for whoever is logged in and show its window; other users get
+# the menu-bar app at their next login.
+console_uid=$(stat -f %u /dev/console)
+if [ "$console_uid" -gt 0 ] 2>/dev/null; then
+  launchctl bootstrap "gui/$console_uid" "/Library/LaunchAgents/$LABEL.app.plist" 2>/dev/null
+  sleep 2
+  launchctl asuser "$console_uid" sudo -u "#$console_uid" open "$APP" 2>/dev/null
+fi
+exit 0

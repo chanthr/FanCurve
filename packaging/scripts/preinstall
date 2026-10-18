@@ -1,0 +1,21 @@
+#!/bin/bash
+# Stops a running FanCurve before its files are replaced. Run as root by the
+# .pkg installer and by fan.sh install.
+LABEL=local.fancurve
+
+console_uid=$(stat -f %u /dev/console)
+if [ "$console_uid" -gt 0 ] 2>/dev/null; then
+  launchctl bootout "gui/$console_uid/$LABEL.app" 2>/dev/null
+fi
+pkill -x FanCurve 2>/dev/null
+
+# The service hands the fans back to Apple when it stops.
+launchctl bootout "system/$LABEL" 2>/dev/null
+
+# Early source installs started the app from a per-user LaunchAgent.
+for agent in /Users/*/Library/LaunchAgents/$LABEL.app.plist; do
+  [ -f "$agent" ] || continue
+  launchctl bootout "gui/$(stat -f %u "$agent")" "$agent" 2>/dev/null
+  rm -f "$agent"
+done
+exit 0
