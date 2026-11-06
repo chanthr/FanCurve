@@ -1,0 +1,181 @@
+{
+  "figures": [
+    {
+      "name": "features",
+      "type": "tiles",
+      "cols": 3,
+      "tiles": [
+        {
+          "icon": "thermometer",
+          "title": "Follows the hotter side",
+          "desc": "Fan speed comes from the higher of the CPU and GPU sensor averages. The app shows which side it follows."
+        },
+        {
+          "icon": "sliders-horizontal",
+          "title": "Curve, Max or Apple auto",
+          "desc": "Three presets and two sliders: where ramping starts and where full speed begins."
+        },
+        {
+          "icon": "shield-check",
+          "title": "Safety first",
+          "desc": "Full speed if any sensor reaches 105 °C. Back to Apple auto if the service stops or loses the sensors."
+        },
+        {
+          "icon": "chart-line",
+          "title": "10-minute chart",
+          "desc": "CPU and GPU temperatures and your curve on one screen. The menu bar shows the current temperature."
+        },
+        {
+          "icon": "feather",
+          "title": "Small footprint",
+          "desc": "A small service in C controls the fans. The SwiftUI app only reads a status file and needs no privileges."
+        }
+      ]
+    },
+    {
+      "name": "presets",
+      "type": "curve",
+      "height": 380,
+      "x": {
+        "range": [
+          30,
+          110
+        ],
+        "ticks": [
+          30,
+          50,
+          70,
+          90,
+          110
+        ],
+        "fmt": "{}°C",
+        "title": "Hotter of the CPU and GPU averages"
+      },
+      "y": {
+        "range": [
+          0,
+          100
+        ],
+        "ticks": [
+          0,
+          25,
+          50,
+          75,
+          100
+        ],
+        "fmt": "{}%",
+        "title": "Fan speed, minimum to maximum rpm"
+      },
+      "markers": [
+        {
+          "x": 105,
+          "label": "Any sensor at 105 °C: full speed"
+        }
+      ],
+      "series": [
+        {
+          "name": "Quiet  55 to 90 °C",
+          "color": {
+            "light": "#8250DF",
+            "dark": "#AB7DF8"
+          },
+          "points": [
+            [
+              30,
+              0
+            ],
+            [
+              55,
+              0
+            ],
+            [
+              90,
+              100
+            ],
+            [
+              110,
+              100
+            ]
+          ],
+          "dots": [
+            [
+              55,
+              0
+            ],
+            [
+              90,
+              100
+            ]
+          ]
+        },
+        {
+          "name": "Balanced  50 to 80 °C (default)",
+          "points": [
+            [
+              30,
+              0
+            ],
+            [
+              50,
+              0
+            ],
+            [
+              80,
+              100
+            ],
+            [
+              110,
+              100
+            ]
+          ],
+          "dots": [
+            [
+              50,
+              0
+            ],
+            [
+              80,
+              100
+            ]
+          ],
+          "width": 3
+        },
+        {
+          "name": "Cool  45 to 72 °C",
+          "color": {
+            "light": "#0969DA",
+            "dark": "#4493F8"
+          },
+          "points": [
+            [
+              30,
+              0
+            ],
+            [
+              45,
+              0
+            ],
+            [
+              72,
+              100
+            ],
+            [
+              110,
+              100
+            ]
+          ],
+          "dots": [
+            [
+              45,
+              0
+            ],
+            [
+              72,
+              100
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

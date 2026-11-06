@@ -1,0 +1,55 @@
+{
+  "eyebrow": "MAC FAN CONTROL",
+  "title": "FanCurve",
+  "subtitle": "A Mac fan curve that follows the hotter of CPU and GPU",
+  "wave": "teal",
+  "animate": true,
+  "steps": [
+    {
+      "who": "Service",
+      "title": "Read",
+      "desc": "Every two seconds, read the CPU and GPU sensors from the SMC"
+    },
+    {
+      "who": "Service",
+      "title": "Pick",
+      "desc": "Average each group and take the hotter one"
+    },
+    {
+      "who": "Service",
+      "title": "Set",
+      "desc": "Map it onto your curve and write the fan target speed"
+    },
+    {
+      "who": "App",
+      "title": "Show",
+      "desc": "The menu bar app shows temperatures and edits the curve"
+    }
+  ],
+  "badges": [
+    {
+      "file": "badge-macos",
+      "label": "macOS",
+      "message": "14+",
+      "color": "neutral"
+    },
+    {
+      "file": "badge-chip",
+      "label": "chip",
+      "message": "M1 or later",
+      "color": "info"
+    },
+    {
+      "file": "badge-ui",
+      "label": "app",
+      "message": "SwiftUI",
+      "color": "#F05138"
+    },
+    {
+      "file": "badge-license",
+      "label": "license",
+      "message": "MIT",
+      "color": "neutral"
+    }
+  ]
+}

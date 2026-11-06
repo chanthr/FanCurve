@@ -1,0 +1,31 @@
+{
+  "out_dir": "ko",
+  "eyebrow": "MAC FAN CONTROL",
+  "title": "FanCurve",
+  "subtitle": "CPU와 GPU 중 더 뜨거운 쪽을 따라가는 Mac 팬 곡선",
+  "wave": "teal",
+  "animate": true,
+  "steps": [
+    {
+      "who": "서비스",
+      "title": "온도 읽기",
+      "desc": "2초마다 SMC에서 CPU 센서와 GPU 센서를 읽습니다"
+    },
+    {
+      "who": "서비스",
+      "title": "기준 고르기",
+      "desc": "묶음마다 평균을 내고 더 높은 쪽을 고릅니다"
+    },
+    {
+      "who": "서비스",
+      "title": "팬 맞추기",
+      "desc": "그 온도를 곡선에 넣어 팬 목표 속도를 씁니다"
+    },
+    {
+      "who": "앱",
+      "title": "보여 주기",
+      "desc": "메뉴 막대 앱이 온도를 보여 주고 곡선을 바꿉니다"
+    }
+  ],
+  "badges": []
+}
