@@ -1,0 +1,43 @@
+name: Bug report
+description: Fans, temperatures or the app behave differently from the README.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **This repository is public.** Remove passwords, serial numbers and other private data before you post.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw in the app or in `./fan.sh status`, and what you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+  - type: textarea
+    id: log
+    attributes:
+      label: Output of ./fan.sh status or ./fan.sh log
+      render: text
+  - type: input
+    id: env
+    attributes:
+      label: Mac
+      description: Model and chip (for example Mac Studio, M4 Max), macOS version, FanCurve version
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Check
+      options:
+        - label: I removed private data from this issue
+          required: true

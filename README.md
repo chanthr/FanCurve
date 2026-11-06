@@ -1,193 +1,250 @@
-<div align="center">
+<h1 align="center">
+  <img alt="FanCurve" src=".github/assets/banner.svg" width="100%">
+</h1>
 
-<img src="docs/icon.png" width="128" alt="FanCurve 아이콘">
-
-# FanCurve
-
-**CPU와 GPU 중 더 뜨거운 쪽을 따라가는 Mac 팬 곡선**
-
-<p>
-  <img src="https://img.shields.io/badge/macOS-14%2B-111111?logo=apple&logoColor=white" alt="macOS 14+">
-  <img src="https://img.shields.io/badge/Apple%20Silicon-arm64-2f6bff" alt="Apple Silicon">
-  <img src="https://img.shields.io/badge/SwiftUI-menu%20bar%20%2B%20window-F05138?logo=swift&logoColor=white" alt="SwiftUI">
-  <img src="https://img.shields.io/badge/license-MIT-737373" alt="MIT License">
+<p align="center">
+  <a href="#install"><img alt="macOS: 14+" src=".github/assets/badge-macos.svg"></a>
+  <a href="#faq"><img alt="chip: M1 or later" src=".github/assets/badge-chip.svg"></a>
+  <a href="#how-it-works"><img alt="app: SwiftUI" src=".github/assets/badge-ui.svg"></a>
+  <a href="LICENSE"><img alt="license: MIT" src=".github/assets/badge-license.svg"></a>
 </p>
 
-<a href="#설치">설치</a> · <a href="#사용법">사용법</a> · <a href="#작동-방식">작동 방식</a> · <a href="#안전장치">안전장치</a> · <a href="#자주-묻는-질문">자주 묻는 질문</a>
+<p align="center">
+  <b>FanCurve drives an Apple Silicon Mac's fans from whichever of the CPU or GPU is hotter.</b><br>
+  Install the package, then pick a curve from the menu bar. The fans follow the hotter chip every two seconds.
+</p>
 
-</div>
+<p align="center">
+  <b>English</b>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="README.ko.md">한국어</a>
+</p>
 
-<br>
+<p align="center">
+  <a href="#install"><b>Install</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#usage">Usage</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#how-it-works">How it works</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#safety">Safety</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#faq">FAQ</a>
+</p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/window-dark.png">
-  <img src="docs/window-light.png" alt="FanCurve 창: 온도, 최근 10분 그래프, 팬 속도, 팬 곡선">
+  <img src="docs/window-light.png" alt="FanCurve window: temperatures, a 10-minute chart, fan speed and the fan curve">
 </picture>
 
-## 왜 만들었나
+## Why
 
-Macs Fan Control 같은 앱은 센서 **하나**를 골라 팬을 맞춥니다. CPU 센서를 고르면 GPU 작업(로컬 LLM 같은)에서 칩이 뜨거워져도 팬이 느리고, GPU 센서를 고르면 반대가 됩니다.
+Fan apps such as Macs Fan Control drive the fans from **one** sensor you pick. Pick a CPU sensor and the fans stay slow while a GPU job (a local LLM, for example) heats the chip. Pick a GPU sensor and the opposite happens.
 
-FanCurve는 **CPU 평균과 GPU 평균 중 높은 쪽**을 2초마다 읽어 팬 곡선에 넣습니다. 어떤 작업을 돌리든 뜨거운 쪽을 따라갑니다.
+FanCurve reads the **CPU average and the GPU average** every two seconds and feeds the higher one into your fan curve. Whatever the workload, the fans follow the hotter side.
 
-## 기능
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/features-dark.svg">
+  <img alt="Features: follows the hotter side; curve, max or Apple auto; safety first; 10-minute chart; small footprint" src=".github/assets/features-light.svg" width="100%">
+</picture>
 
-| | |
-|---|---|
-| 🌡️ **더 뜨거운 쪽을 따라감** | CPU 센서 평균과 GPU 센서 평균 중 높은 값으로 팬 속도를 정합니다. 지금 어느 쪽을 따라가는지 앱에 표시됩니다. |
-| 🎚️ **곡선 / 항상 최대 / Apple 자동** | 프리셋 세 개(조용 · 균형 · 시원)와 슬라이더로 "몇 도부터 빨라질지, 몇 도에 최대일지"를 정합니다. |
-| 🛡️ **안전장치** | 센서 하나라도 105°C에 닿으면 곡선과 관계없이 최대. 서비스가 멈추거나 온도를 못 읽으면 Apple 자동으로 되돌립니다. |
-| 📈 **최근 10분 그래프** | CPU·GPU 온도 추이와 곡선 설정을 한 화면에서 봅니다. 메뉴 막대에는 지금 온도가 늘 보입니다. |
-| 🪶 **가벼운 구조** | 팬 제어는 C로 쓴 작은 서비스가, 화면은 SwiftUI 앱이 맡습니다. 앱은 권한 없이 상태 파일만 읽습니다. |
+<details>
+<summary>Features as a table</summary>
+<br>
 
-## 설치
+| Feature | What it does |
+| --- | --- |
+| **Follows the hotter side** | Sets fan speed from the higher of the CPU sensor average and the GPU sensor average. The app shows which side it is following. |
+| **Curve, Max or Apple auto** | Three presets (Quiet, Balanced, Cool) and sliders for "start ramping at" and "full speed at". |
+| **Safety first** | Full speed if any single sensor reaches 105 °C. Back to Apple's automatic control if the service stops or cannot read temperatures. |
+| **10-minute chart** | CPU and GPU temperatures and your curve on one screen. The menu bar always shows the current temperature. |
+| **Small footprint** | A small service written in C controls the fans. The SwiftUI app only reads a status file and needs no privileges. |
 
-**필요 조건:** Apple Silicon Mac(M1 이후), macOS 14 Sonoma 이상
+</details>
 
-### 방법 1. 설치 패키지 (추천)
+## Install
 
-1. [Releases](../../releases)에서 `FanCurve-1.0.0.pkg`를 내려받아 엽니다.
-2. 안내를 따라 설치하면 메뉴 막대에 팬 아이콘과 온도가 나타납니다.
+**Requirements:** an Apple Silicon Mac (M1 or later) on macOS 14 Sonoma or later. The app interface is in Korean.
+
+### Option 1. Installer package (recommended)
+
+1. Download `FanCurve-1.0.0.pkg` from [Releases](../../releases) and open it.
+2. Follow the installer. A fan icon and the temperature appear in the menu bar.
 
 > [!NOTE]
-> 개발자 인증서로 서명하지 않은 패키지라, 처음 열 때 macOS가 "확인할 수 없음"이라며 막을 수 있습니다.
-> **시스템 설정 → 개인정보 보호 및 보안**에서 맨 아래 **그래도 열기**를 누른 뒤 다시 여세요.
+> The package is not signed with a developer certificate, so macOS may block it the first time.
+> Open **System Settings, Privacy & Security**, click **Open Anyway** at the bottom, then open the package again.
 
-### 방법 2. 터미널 한 줄
+### Option 2. One line in Terminal
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/chanthr/FanCurve/main/install.sh | bash
 ```
 
-최신 릴리스의 패키지를 내려받아 `installer`로 설치합니다. 저장소가 공개 상태일 때 동작합니다.
+This downloads the latest release package and installs it with `installer`.
 
-### 방법 3. 소스에서 빌드
+### Option 3. Build from source
 
 ```bash
-xcode-select --install          # 빌드 도구가 없다면 한 번만
+xcode-select --install          # once, if you have no build tools
 git clone https://github.com/chanthr/FanCurve.git
 cd FanCurve
 sudo ./fan.sh install
 ```
 
-`./fan.sh package`를 실행하면 `dist/`에 같은 설치 패키지를 직접 만들 수 있습니다.
+`./fan.sh package` builds the same installer package into `dist/`.
 
 > [!IMPORTANT]
-> **Macs Fan Control 같은 다른 팬 조절 앱**을 쓰고 있다면 그 앱의 팬 설정을 **자동**으로 두거나 앱을 종료하세요.
-> 두 프로그램이 동시에 팬 속도를 쓰면 서로 덮어씁니다. FanCurve는 이를 감지하면 화면에 '충돌'로 알려 줍니다.
+> If you use **another fan app** such as Macs Fan Control, set its fans to **Auto** or quit it.
+> Two programs writing fan speeds overwrite each other. FanCurve detects this and shows a conflict warning.
 
-## 사용법
+## Usage
 
 <table>
 <tr>
 <td width="46%">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/menu-dark.png">
-  <img src="docs/menu-light.png" alt="메뉴 막대 창">
+  <img src="docs/menu-light.png" alt="Menu bar window">
 </picture>
 </td>
 <td>
 
-**메뉴 막대**에서 팬 아이콘을 누르면 오른쪽 같은 창이 열립니다. 응용 프로그램 폴더나 Spotlight에서 **FanCurve**를 열면 넓은 창으로 볼 수 있고, 창을 닫으면 메뉴 막대에만 남습니다.
+Click the fan icon in the **menu bar** to open the window on the left. Open **FanCurve** from Applications or Spotlight for a larger window. Closing the window keeps the app in the menu bar.
 
-**팬 곡선**은 두 온도로 정합니다.
+The **fan curve** is set by two temperatures: where ramping starts and where full speed begins. The chart below shows the three presets.
 
-| 프리셋 | 빨라지기 시작 | 최대 속도 |
-|---|---|---|
-| 🌙 조용 | 55°C | 90°C |
-| ◐ 균형 (기본) | 50°C | 80°C |
-| ❄️ 시원 | 45°C | 72°C |
+Between the two, speed rises in proportion to temperature. Speed goes up immediately and comes down over about a minute, so the fan noise does not jump around.
 
-그 사이에서는 온도에 비례해 속도가 오릅니다. 빨라질 때는 바로, 느려질 때는 1분 남짓에 걸쳐 천천히 바뀌어 소리가 들쭉날쭉하지 않습니다.
+**Modes**
 
-**모드**
-- **곡선**: 위 곡선을 따릅니다.
-- **항상 최대**: 무거운 작업을 오래 돌릴 때.
-- **Apple 자동**: 제어를 macOS에 맡기고 온도만 봅니다.
+1. **Curve** follows your curve.
+2. **Always max** is for long, heavy jobs.
+3. **Apple auto** hands control back to macOS and only shows temperatures.
 
 </td>
 </tr>
 </table>
 
-## 작동 방식
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/presets-dark.svg">
+  <img alt="Fan curve presets: Quiet 55 to 90 °C, Balanced 50 to 80 °C (default), Cool 45 to 72 °C. Any sensor at 105 °C means full speed." src=".github/assets/presets-light.svg" width="100%">
+</picture>
+
+<details>
+<summary>Presets as a table</summary>
+<br>
+
+| Preset | Start ramping | Full speed |
+| --- | --- | --- |
+| Quiet | 55 °C | 90 °C |
+| Balanced (default) | 50 °C | 80 °C |
+| Cool | 45 °C | 72 °C |
+
+</details>
+
+## How it works
+
+<p align="center">
+  <img alt="How it works: Read, Pick, Set, Show" src=".github/assets/flow.svg" width="100%">
+</p>
+
+<details>
+<summary>Details</summary>
+<br>
 
 ```mermaid
 flowchart LR
-  S["SMC 온도 센서<br/>CPU Tp* · GPU Tg*"] -- "2초마다" --> D["fancurve 서비스<br/>(root, launchd)"]
-  D -- "팬 모드 · 목표 속도" --> F(("팬"))
-  D -- "status.json" --> A["FanCurve 앱<br/>(메뉴 막대 · 창)"]
+  S["SMC temperature sensors<br/>CPU Tp*, GPU Tg*"] -- "every 2 s" --> D["fancurve service<br/>(root, launchd)"]
+  D -- "fan mode, target speed" --> F(("Fans"))
+  D -- "status.json" --> A["FanCurve app<br/>(menu bar, window)"]
   A -- "config" --> D
 ```
 
-- **서비스** (`/usr/local/libexec/fancurve`): 부팅할 때 launchd가 띄웁니다. SMC에서 CPU 센서(`Tp*`)와 GPU 센서(`Tg*`)를 읽어 평균을 내고, 높은 쪽을 곡선에 넣어 팬 목표 속도를 씁니다. 팬 속도를 바꾸려면 root 권한이 필요해서 이 부분만 서비스로 분리했습니다.
-- **앱** (`/Applications/FanCurve.app`): 서비스가 2초마다 쓰는 `status.json`을 읽어 보여 주고, 사용자가 바꾼 곡선을 `config`에 씁니다. 서비스는 2초 안에 새 설정을 반영합니다.
-- **튀는 값 거르기**: CPU가 쉬는 동안 일부 센서가 잠깐 0, ±4, 40.0 같은 자리표시 값을 내놓습니다. 센서의 90% 이상이 정상 범위(15–150°C)일 때만 측정을 쓰고, 아니면 직전 값을 씁니다.
+| Part | What it does |
+| --- | --- |
+| **Service** (`/usr/local/libexec/fancurve`) | Started by launchd at boot. Reads the CPU sensors (`Tp*`) and GPU sensors (`Tg*`) from the SMC, averages each group, feeds the higher one into the curve and writes the fan target speed. Changing fan speed needs root, so only this part runs as a service. |
+| **App** (`/Applications/FanCurve.app`) | Reads the `status.json` that the service writes every two seconds and writes your curve to `config`. The service applies a new config within two seconds. |
+| **Spike filter** | While the CPU idles, some sensors briefly report placeholder values such as 0, ±4 or 40.0. A reading is used only when at least 90% of the sensors are in the normal range (15 to 150 °C). Otherwise the previous reading is kept. |
 
-## 안전장치
+</details>
 
-- 센서 하나라도 **105°C**에 닿으면 곡선과 관계없이 팬을 최대로 돌립니다.
-- 서비스가 끝나면(제거, 재부팅, 종료 신호) 팬을 **Apple 자동**으로 되돌립니다.
-- 온도를 계속 읽지 못하거나 팬 속도를 쓰지 못하면 Apple 자동으로 되돌리고 멈춥니다.
-- 설정 파일에 이상한 값이 들어가도 서비스가 안전한 범위로 고쳐 씁니다.
-- 팬이 없는 Mac(MacBook Air)에서는 팬을 건드리지 않고 온도만 보여 줍니다.
+## Safety
 
-비상시에는 언제든 팬을 Apple 자동으로 되돌릴 수 있습니다.
+1. If any single sensor reaches **105 °C**, the fans run at full speed regardless of the curve.
+2. When the service exits (uninstall, reboot, termination signal), the fans go back to **Apple auto**.
+3. If temperatures cannot be read or fan speeds cannot be written for a while, the fans go back to Apple auto and the service stops.
+4. Out-of-range values in the config file are clamped to a safe range.
+5. On Macs without fans (MacBook Air), FanCurve leaves the fans alone and only shows temperatures.
+
+In an emergency you can always hand the fans back to Apple:
 
 ```bash
 sudo /usr/local/libexec/fancurve --auto
 ```
 
-## 제거
+## Uninstall
 
 ```bash
 sudo /Applications/FanCurve.app/Contents/Resources/uninstall.sh
 ```
 
-앱, 서비스, 설정을 모두 지우고 팬을 Apple 자동 제어로 되돌립니다. 소스로 설치했다면 `sudo ./fan.sh uninstall`도 같습니다.
+This removes the app, the service and the config, and returns the fans to Apple's automatic control. If you installed from source, `sudo ./fan.sh uninstall` does the same.
 
-## 명령어
+## Commands
 
-소스 폴더의 `fan.sh`로 상태를 보거나 직접 돌릴 수 있습니다.
+`fan.sh` in the source folder shows status and runs things directly.
 
-| 명령 | 하는 일 |
-|---|---|
-| `./fan.sh status` | 온도, 팬 속도, 설정, 서비스 상태 |
-| `./fan.sh test` | 팬은 건드리지 않고 곡선 계산만 2초마다 출력 |
-| `./fan.sh log` | 서비스 기록 보기 |
-| `sudo ./fan.sh install` / `uninstall` | 설치 / 제거 |
-| `sudo ./fan.sh auto` | 팬을 바로 Apple 자동으로 |
-| `./fan.sh package` | 설치 패키지 만들기 (`dist/`) |
+| Command | What it does |
+| --- | --- |
+| `./fan.sh status` | Temperatures, fan speed, config and service status |
+| `./fan.sh test` | Prints the curve calculation every two seconds without touching the fans |
+| `./fan.sh log` | Shows the service log |
+| `sudo ./fan.sh install` / `uninstall` | Install or remove |
+| `sudo ./fan.sh auto` | Return the fans to Apple auto right away |
+| `./fan.sh package` | Build the installer package into `dist/` |
 
-## 자주 묻는 질문
+## FAQ
 
 <details>
-<summary><b>앱에 나오는 CPU 온도가 다른 앱보다 높아요</b></summary>
+<summary><b>The CPU temperature is higher than in other apps</b></summary>
 
-FanCurve는 SMC의 CPU 센서(`Tp*`) 전체를 평균합니다. macmon 같은 도구는 다른 센서 묶음을 써서, M4 Max 기준으로 FanCurve가 7°C쯤 높게 나옵니다. 냉각 기준으로는 높게 잡는 쪽이 안전합니다.
+FanCurve averages every CPU sensor in the SMC (`Tp*`). Tools such as macmon use a different set of sensors, so on an M4 Max FanCurve reads about 7 °C higher. For cooling, reading high is the safer side.
 </details>
 
 <details>
-<summary><b>'가장 뜨거운 곳'이 95°C를 넘는데 괜찮나요?</b></summary>
+<summary><b>"Hottest spot" is above 95 °C. Is that fine?</b></summary>
 
-칩 안에서 가장 뜨거운 한 점이라, 부하가 걸리면 평균보다 15–20°C 높게 나오는 게 보통입니다. Apple Silicon은 이보다 더 뜨거워지면 스스로 클럭을 낮춥니다. FanCurve는 105°C에 닿으면 팬을 최대로 돌립니다.
+That is the single hottest point on the chip. Under load it usually sits 15 to 20 °C above the average. Apple Silicon lowers its own clock if it gets hotter than that. FanCurve goes to full speed at 105 °C.
 </details>
 
 <details>
-<summary><b>Intel Mac에서도 되나요?</b></summary>
+<summary><b>Does it work on Intel Macs?</b></summary>
 
-아니요. Intel Mac은 SMC 키와 값 형식이 달라 지원하지 않습니다. 설치 프로그램이 Apple Silicon이 아니면 설치를 막습니다.
+No. Intel Macs use different SMC keys and value formats. The installer refuses to install on anything other than Apple Silicon.
 </details>
 
 <details>
-<summary><b>어떤 Mac에서 시험했나요?</b></summary>
+<summary><b>Which Macs has it been tested on?</b></summary>
 
-Mac Studio(M4 Max, macOS 26)에서 만들고 시험했습니다. 다른 Apple Silicon Mac도 같은 방식(팬 모드 키에 1을 쓰면 수동, 0이면 자동)을 쓰지만 아직 직접 시험하지는 못했습니다. 다른 기종에서 써 보셨다면 이슈로 알려 주세요.
+It was built and tested on a Mac Studio (M4 Max, macOS 26). Other Apple Silicon Macs use the same mechanism (write 1 to the fan mode key for manual, 0 for auto), but they have not been tested yet. If you try it on another model, please open an issue.
 </details>
 
-## English
+## Files
 
-FanCurve drives the fans of an Apple Silicon Mac from the **hotter of the CPU and GPU sensor averages**, so the fans respond whether a job loads the CPU or the GPU. A small root service (C) reads the SMC every two seconds and sets the fan speed; a SwiftUI menu-bar app shows the temperatures and edits the curve. If any sensor reaches 105 °C the fans go to full speed, and whenever the service stops the fans return to Apple's automatic control. The interface is in Korean. Requires macOS 14+ on Apple Silicon. Install with the `.pkg` from Releases or `sudo ./fan.sh install`.
+| Path | Contents |
+| --- | --- |
+| [`Sources/fancurve.c`](Sources/fancurve.c) | The root service: SMC reads, curve, fan writes, safety rules |
+| [`Sources/FanCurveApp.swift`](Sources/FanCurveApp.swift) | The menu bar app and window |
+| [`fan.sh`](fan.sh) | Build, install, status, test and packaging commands |
+| [`install.sh`](install.sh) | One-line installer that fetches the latest release |
+| [`packaging/`](packaging/) | Installer package scripts, launchd plists and the uninstaller |
+| [`docs/`](docs/) | Screenshots and the app icon |
+| [`.github/`](.github/) | Issue and PR templates, README images (`uv run .github/assets/make.py`) |
 
-## 라이선스
+## Contributing
+
+Please open an issue for problems and ideas.
+
+| Template | Use it when |
+| --- | --- |
+| [**Bug report**](https://github.com/chanthr/FanCurve/issues/new?template=01-bug.yml) | Fans, temperatures or the app behave differently from this README |
+| [**Improvement**](https://github.com/chanthr/FanCurve/issues/new?template=02-improvement.yml) | You have a better way, or you tested FanCurve on another Mac |
+
+## License
 
 [MIT](LICENSE) © 2026 chanthr

@@ -1,0 +1,32 @@
+name: Improvement
+description: A better way to do something, or a report from a Mac model not tested yet.
+title: "[Improvement] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **This repository is public.** Remove private data before you post.
+  - type: textarea
+    id: now
+    attributes:
+      label: Current behavior
+      description: What FanCurve or the README does today.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal or test report
+      description: What you would change, or how FanCurve behaved on your Mac (model, chip, macOS).
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Check
+      options:
+        - label: I removed private data from this issue
+          required: true
